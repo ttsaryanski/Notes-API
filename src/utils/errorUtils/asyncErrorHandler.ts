@@ -2,8 +2,8 @@ import { Request, Response, NextFunction, RequestHandler } from "express";
 
 export const asyncErrorHandler =
     (
-        fn: (req: Request, res: Response, next: NextFunction) => Promise<any>
+        fn: (req: Request, res: Response, next: NextFunction) => Promise<void>
     ): RequestHandler =>
-    (req, res, next) => {
-        Promise.resolve(fn(req, res, next)).catch(next);
+    (_req, _res, _next) => {
+        Promise.resolve(fn(_req, _res, _next)).catch(_next);
     };

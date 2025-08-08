@@ -21,7 +21,7 @@ export async function clearTestDB() {
 
     const collections = await db.collections();
 
-    for (let collection of collections) {
+    for (const collection of collections) {
         await collection.deleteMany();
     }
 }

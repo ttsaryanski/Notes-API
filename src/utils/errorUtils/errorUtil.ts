@@ -1,4 +1,5 @@
 import { Error as MongooseError, mongo } from "mongoose";
+import { ErrorTypes } from "../../types/ErrorTypes";
 
 type MongoDuplicateError = mongo.MongoServerError & {
     code: 11000;
@@ -48,7 +49,7 @@ export const createErrorMsg = (
 
     if (
         err instanceof SyntaxError &&
-        (err as any).status === 400 &&
+        (err as ErrorTypes).status === 400 &&
         "body" in err
     ) {
         return "Invalid JSON input!";

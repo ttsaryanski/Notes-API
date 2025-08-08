@@ -5,6 +5,8 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon",
+    "build": "tsc",
+    "start": "node dist/src/server.js",
     "test": "jest",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
@@ -35,7 +37,8 @@
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.39.0"
   },
   "dependencies": {
     "dotenv": "^17.2.1",
