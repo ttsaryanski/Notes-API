@@ -1,0 +1,98 @@
+openapi: 3.0.0
+info:
+    title: Notes REST API
+    version: 1.0.0
+
+servers:
+    - url: http://localhost:3000/api
+
+paths:
+    /notes:
+        get:
+            summary: Gets all notes
+            tags: [Notes]
+            responses:
+                200:
+                    description: Ok - Successfully retrieved notes
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/GetAllNotesResponse"
+                500:
+                    description: Internal Server Error - Server error
+                    content:
+                        application/json:
+                            example:
+                                message: "Internal server error..."
+        post:
+            summary: Creates a new note
+            tags: [Notes]
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/CreateNoteRequest"
+            responses:
+                201:
+                    description: Created - Note successfully created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/SimpleNote"
+                400:
+                    description: Bad Request - Invalid data
+                    content:
+                        application/json:
+                            examples:
+                                invalidTitle:
+                                    summary: Invalid title
+                                    value:
+                                        message: "Note title should be at least 3 characters long!"
+                                invalidContent:
+                                    summary: Invalid content
+                                    value:
+                                        message: "Note content should be at least 3 characters long!"
+                500:
+                    description: Internal Server Error - Server error
+                    content:
+                        application/json:
+                            example:
+                                message: "Internal server error..."
+
+components:
+    schemas:
+        SimpleNote:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    example: "6833318fd414ea08fac843ec"
+                title:
+                    type: string
+                    example: "Note title"
+                content:
+                    type: string
+                    example: "Note content"
+                createdAt:
+                    type: string
+                    format: date-time
+                    example: "2025-05-25T15:04:47.780Z"
+
+        GetAllNotesResponse:
+            type: array
+            items:
+                $ref: "#/components/schemas/SimpleNote"
+
+        CreateNoteRequest:
+            type: object
+            required:
+                - title
+                - content
+            properties:
+                title:
+                    type: string
+                    example: "New note Title"
+                content:
+                    type: string
+                    example: "New note content"
