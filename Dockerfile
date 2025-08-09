@@ -18,8 +18,7 @@ WORKDIR /app
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/src/docs/openapi.yaml ./src/docs/openapi.yaml
-
-RUN npm ci --omit=dev
+COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 8080
 

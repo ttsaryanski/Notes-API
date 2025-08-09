@@ -145,6 +145,8 @@ yarn-error.log
 
 help_deploy.md
 help_git.md
+help_git_actions.md
+gcp_json_key.json
 .dockerignore
 any.md
 .VSCodeCounter
