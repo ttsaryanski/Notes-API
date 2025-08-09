@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon",
-    "build": "tsc",
+    "build": "tsc && cpx src/docs/openapi.yaml dist/src/docs",
     "start": "node dist/src/server.js",
     "test": "jest",
     "format": "prettier . --write",
@@ -29,6 +29,7 @@
     "@types/supertest": "^6.0.3",
     "@types/swagger-ui-express": "^4.1.8",
     "babel-jest": "^30.0.5",
+    "cpx": "^1.5.0",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",

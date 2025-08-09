@@ -143,8 +143,8 @@ dist
 npm-debug.log
 yarn-error.log
 
-HELP.md
-GIT.md
+help_deploy.md
+help_git.md
 .dockerignore
 any.md
 .VSCodeCounter
