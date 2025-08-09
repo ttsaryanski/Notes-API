@@ -1,4 +1,7 @@
-# NOTES API ⚠️Under development
+# NOTES API - [Live API](https://notes-api-1034694665482.europe-west4.run.app/) ⚠️Under development
+
+- use /api/docs - does not support request execution
+- use /api/notes
 
 ## ℹ️ About the Project
 
