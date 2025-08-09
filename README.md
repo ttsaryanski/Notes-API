@@ -58,7 +58,7 @@ npm install
 
 3. Save the file.
 
-## 3. Start the MOTES API Server
+## 3. Start the NOTES API Server
 
 ⚠️ **Note:** Run the following command to start the server:
 
