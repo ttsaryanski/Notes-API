@@ -6,8 +6,6 @@ import { Note, INote } from "../../../src/models/Note";
 
 import { CreateNoteDataType } from "../../../src/validators/notes/notes.schema";
 
-const validId = "64b2f9d4f8a1e4e1c5a9c123";
-
 describe("GET /notes", () => {
     it("should return empty array", async () => {
         const res = await request(app).get("/api/notes");
