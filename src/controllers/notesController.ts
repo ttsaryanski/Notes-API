@@ -22,13 +22,13 @@ export function notesController(notesService: NotesServicesTypes) {
     router.post(
         "/",
         asyncErrorHandler(async (req: Request, res: Response) => {
-            const result = createNoteSchema.safeParse(req.body);
+            const resultData = createNoteSchema.safeParse(req.body);
 
-            if (!result.success) {
-                throw new CustomError(result.error.issues[0].message, 400);
+            if (!resultData.success) {
+                throw new CustomError(resultData.error.issues[0].message, 400);
             }
 
-            const note = await notesService.create(result.data);
+            const note = await notesService.create(resultData.data);
             res.status(201).json(note);
         })
     );
@@ -37,6 +37,8 @@ export function notesController(notesService: NotesServicesTypes) {
         "/:noteId",
         asyncErrorHandler(async (req, res) => {
             const resultId = mongooseIdSchema.safeParse(req.params.noteId);
+            console.log(resultId.data);
+
             if (!resultId.success) {
                 throw new CustomError(resultId.error.issues[0].message, 400);
             }
@@ -51,7 +53,7 @@ export function notesController(notesService: NotesServicesTypes) {
                 resultData.data
             );
 
-            res.status(201).json(note);
+            res.status(200).json(note);
         })
     );
 
@@ -66,6 +68,20 @@ export function notesController(notesService: NotesServicesTypes) {
             await notesService.remove(resultId.data);
 
             res.status(204).end();
+        })
+    );
+
+    router.get(
+        "/:noteId",
+        asyncErrorHandler(async (req, res) => {
+            const resultId = mongooseIdSchema.safeParse(req.params.noteId);
+            if (!resultId.success) {
+                throw new CustomError(resultId.error.issues[0].message, 400);
+            }
+
+            const note = await notesService.getById(resultId.data);
+
+            res.status(200).send(note);
         })
     );
 

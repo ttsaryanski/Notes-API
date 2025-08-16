@@ -6,4 +6,5 @@ export interface NotesServicesTypes {
     create(data: CreateNoteDataType): Promise<NotesResponseType>;
     edit(noteId: string, data: CreateNoteDataType): Promise<NotesResponseType>;
     remove(noteId: string): Promise<void>;
+    getById(noteId: string): Promise<NotesResponseType>;
 }
