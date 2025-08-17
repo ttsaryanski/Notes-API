@@ -5,9 +5,9 @@ import { noteController } from "../../../../src/controllers/noteController.js";
 
 import errorHandler from "../../../../src/middlewares/errorHandler.js";
 
-import { NoteServicesTypes } from "../../../../src/types/ServicesTypes";
-import { NoteResponseType } from "../../../../src/types/NoteTypes";
-import { CreateNoteDataType } from "../../../../src/validators/notes/note.schema";
+import { NoteServicesTypes } from "../../../../src/types/ServicesTypes.js";
+import { NoteResponseType } from "../../../../src/types/NoteTypes.js";
+import { CreateNoteDataType } from "../../../../src/validators/notes/note.schema.js";
 
 const validId = "64b2f9d4f8a1e4e1c5a9c123";
 
