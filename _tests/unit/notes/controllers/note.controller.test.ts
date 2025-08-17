@@ -1,17 +1,17 @@
 import express from "express";
 import request from "supertest";
 
-import { notesController } from "../../../../src/controllers/notesController.js";
+import { noteController } from "../../../../src/controllers/noteController.js";
 
 import errorHandler from "../../../../src/middlewares/errorHandler.js";
 
-import { NotesServicesTypes } from "../../../../src/types/ServicesTypes.js";
-import { NotesResponseType } from "../../../../src/types/NotesTypes.js";
-import { CreateNoteDataType } from "../../../../src/validators/notes/notes.schema.js";
+import { NoteServicesTypes } from "../../../../src/types/ServicesTypes";
+import { NoteResponseType } from "../../../../src/types/NoteTypes";
+import { CreateNoteDataType } from "../../../../src/validators/notes/note.schema";
 
 const validId = "64b2f9d4f8a1e4e1c5a9c123";
 
-const mockNotesService: jest.Mocked<NotesServicesTypes> = {
+const mockNotesService: jest.Mocked<NoteServicesTypes> = {
     getAll: jest.fn(),
     create: jest.fn(),
     edit: jest.fn(),
@@ -21,7 +21,7 @@ const mockNotesService: jest.Mocked<NotesServicesTypes> = {
 
 const app = express();
 app.use(express.json());
-app.use("/notes", notesController(mockNotesService));
+app.use("/notes", noteController(mockNotesService));
 app.use(errorHandler);
 
 describe("Notes Controller", () => {
@@ -41,7 +41,7 @@ describe("Notes Controller", () => {
         mockNotesService.getAll.mockResolvedValue(mockData);
 
         const res = await request(app).get("/notes");
-        const resBody = res.body as NotesResponseType[];
+        const resBody = res.body as NoteResponseType[];
 
         expect(res.status).toBe(200);
         expect([
@@ -68,7 +68,7 @@ describe("Notes Controller", () => {
             title: "New note",
             content: "Note content",
         };
-        const createdNote: NotesResponseType = {
+        const createdNote: NoteResponseType = {
             ...newNote,
             _id: validId,
             createdAt: new Date(),
@@ -76,7 +76,7 @@ describe("Notes Controller", () => {
         mockNotesService.create.mockResolvedValue(createdNote);
 
         const res = await request(app).post("/notes").send(newNote);
-        const resBody = res.body as NotesResponseType;
+        const resBody = res.body as NoteResponseType;
 
         expect(res.status).toBe(201);
         expect({
@@ -119,7 +119,7 @@ describe("Notes Controller", () => {
             title: "Edited note title",
             content: "Edited note content",
         };
-        const updatedNote: NotesResponseType = {
+        const updatedNote: NoteResponseType = {
             ...editData,
             _id: validId,
             createdAt: new Date(),
@@ -127,7 +127,7 @@ describe("Notes Controller", () => {
         mockNotesService.edit.mockResolvedValue(updatedNote);
 
         const res = await request(app).put(`/notes/${validId}`).send(editData);
-        const resBody = res.body as NotesResponseType;
+        const resBody = res.body as NoteResponseType;
 
         expect(res.status).toBe(200);
         expect({
@@ -187,7 +187,7 @@ describe("Notes Controller", () => {
         mockNotesService.remove.mockResolvedValue();
 
         const res = await request(app).delete(`/notes/${validId}`);
-        const resBody = res.body as NotesResponseType;
+        const resBody = res.body as NoteResponseType;
 
         expect(res.status).toBe(204);
         expect(resBody).toEqual({});
@@ -213,7 +213,7 @@ describe("Notes Controller", () => {
         mockNotesService.getById.mockResolvedValue(mockData);
 
         const res = await request(app).get(`/notes/${validId}`);
-        const resBody = res.body as NotesResponseType;
+        const resBody = res.body as NoteResponseType;
 
         expect(res.status).toBe(200);
         expect({

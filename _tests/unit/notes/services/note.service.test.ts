@@ -1,9 +1,9 @@
-import { notesService } from "../../../../src/services/notesService.js";
+import { noteService } from "../../../../src/services/noteService.js";
 
 import { Note } from "../../../../src/models/Note.js";
 
-import { NotesResponseType } from "../../../../src/types/NotesTypes.js";
-import { CreateNoteDataType } from "../../../../src/validators/notes/notes.schema.js";
+import { NoteResponseType } from "../../../../src/types/NoteTypes";
+import { CreateNoteDataType } from "../../../../src/validators/notes/note.schema";
 
 import { CustomError } from "../../../../src/utils/errorUtils/customError.js";
 
@@ -51,9 +51,9 @@ describe("notesService/getAll()", () => {
         const selectMock = jest.fn().mockReturnValue({ lean: leanMock });
         (mockedNote.find as jest.Mock).mockReturnValue({ select: selectMock });
 
-        const result = await notesService.getAll();
+        const result = await noteService.getAll();
 
-        const expected: NotesResponseType[] = [
+        const expected: NoteResponseType[] = [
             {
                 _id: "id1",
                 title: "Title 1",
@@ -95,9 +95,9 @@ describe("notesService/create", () => {
 
         (mockedNote.create as jest.Mock).mockResolvedValue(mockNote);
 
-        const result = await notesService.create(createData);
+        const result = await noteService.create(createData);
 
-        const expected: NotesResponseType = {
+        const expected: NoteResponseType = {
             _id: "id1",
             title: "Test title",
             content: "Test content",
@@ -126,9 +126,9 @@ describe("notesService/edit", () => {
             mockUpdate as MockNoteInterface
         );
 
-        const result = await notesService.edit(noteId, updateData);
+        const result = await noteService.edit(noteId, updateData);
 
-        const expected: NotesResponseType = {
+        const expected: NoteResponseType = {
             _id: noteId,
             title: "Updated title",
             content: "Updated content",
@@ -150,7 +150,7 @@ describe("notesService/edit", () => {
         mockedNote.findByIdAndUpdate.mockResolvedValue(null);
 
         await expect(
-            notesService.edit("id1", { title: "x", content: "y" })
+            noteService.edit("id1", { title: "x", content: "y" })
         ).rejects.toThrow(CustomError);
     });
 });
@@ -171,7 +171,7 @@ describe("notesService/remove", () => {
             mockDelete as MockNoteInterface
         );
 
-        await notesService.remove("id1");
+        await noteService.remove("id1");
 
         expect(mockedNote.findByIdAndDelete).toHaveBeenCalledWith("id1");
     });
@@ -179,7 +179,7 @@ describe("notesService/remove", () => {
     it("should throw CustomError when note not found!", async () => {
         mockedNote.findByIdAndDelete.mockResolvedValue(null);
 
-        await expect(notesService.remove("id1")).rejects.toThrow(CustomError);
+        await expect(noteService.remove("id1")).rejects.toThrow(CustomError);
     });
 });
 
@@ -198,9 +198,9 @@ describe("notesService/getById", () => {
 
         mockedNote.findById.mockResolvedValue(mockNote as MockNoteInterface);
 
-        const result = await notesService.getById("id1");
+        const result = await noteService.getById("id1");
 
-        const expected: NotesResponseType = {
+        const expected: NoteResponseType = {
             _id: "id1",
             title: "Title",
             content: "Content",
@@ -214,6 +214,6 @@ describe("notesService/getById", () => {
     it("should throw CustomError when note is not found", async () => {
         mockedNote.findById.mockResolvedValue(null);
 
-        await expect(notesService.getById("id1")).rejects.toThrow(CustomError);
+        await expect(noteService.getById("id1")).rejects.toThrow(CustomError);
     });
 });

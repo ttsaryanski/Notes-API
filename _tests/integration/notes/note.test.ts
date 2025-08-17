@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import app from "../../../src/app";
 import { Note, INote } from "../../../src/models/Note";
 
-import { CreateNoteDataType } from "../../../src/validators/notes/notes.schema";
+import { CreateNoteDataType } from "../../../src/validators/notes/note.schema";
 
 describe("GET /notes", () => {
     it("should return empty array", async () => {

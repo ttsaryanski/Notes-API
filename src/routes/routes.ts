@@ -1,9 +1,9 @@
 import { Router } from "express";
 
-import notesRoutes from "./notes/notesControler.js";
+import noteRoutes from "./notes/noteController.js";
 
 const routes = Router();
 
-routes.use("/notes", notesRoutes);
+routes.use("/notes", noteRoutes);
 
 export default routes;

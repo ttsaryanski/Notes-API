@@ -1,13 +1,13 @@
 import { Note } from "../models/Note.js";
 
-import { NotesResponseType } from "../types/NotesTypes.js";
-import { NotesServicesTypes } from "../types/ServicesTypes.js";
-import { CreateNoteDataType } from "../validators/notes/notes.schema.js";
+import { NoteResponseType } from "../types/NoteTypes";
+import { NoteServicesTypes } from "../types/ServicesTypes";
+import { CreateNoteDataType } from "../validators/notes/note.schema";
 
 import { CustomError } from "../utils/errorUtils/customError.js";
 
-export const notesService: NotesServicesTypes = {
-    async getAll(): Promise<NotesResponseType[]> {
+export const noteService: NoteServicesTypes = {
+    async getAll(): Promise<NoteResponseType[]> {
         const notes = await Note.find().select("-__v").lean();
 
         return notes.map((note) => ({
@@ -18,8 +18,8 @@ export const notesService: NotesServicesTypes = {
         }));
     },
 
-    async create(data: CreateNoteDataType): Promise<NotesResponseType> {
-        const newNote = (await Note.create(data)) as NotesResponseType;
+    async create(data: CreateNoteDataType): Promise<NoteResponseType> {
+        const newNote = (await Note.create(data)) as NoteResponseType;
         return {
             _id: newNote._id.toString(),
             title: newNote.title,
@@ -31,11 +31,11 @@ export const notesService: NotesServicesTypes = {
     async edit(
         noteId: string,
         data: CreateNoteDataType
-    ): Promise<NotesResponseType> {
+    ): Promise<NoteResponseType> {
         const updatedNote = (await Note.findByIdAndUpdate(noteId, data, {
             runValidators: true,
             new: true,
-        })) as NotesResponseType;
+        })) as NoteResponseType;
 
         if (!updatedNote) {
             throw new CustomError("Note not found!", 404);
@@ -56,8 +56,8 @@ export const notesService: NotesServicesTypes = {
         }
     },
 
-    async getById(noteId: string): Promise<NotesResponseType> {
-        const note = (await Note.findById(noteId)) as NotesResponseType;
+    async getById(noteId: string): Promise<NoteResponseType> {
+        const note = (await Note.findById(noteId)) as NoteResponseType;
 
         if (!note) {
             throw new CustomError("There is no note with this id!", 404);

@@ -1,20 +1,20 @@
 import { Router, Request, Response } from "express";
 
-import { NotesServicesTypes } from "../types/ServicesTypes.js";
+import { NoteServicesTypes } from "../types/ServicesTypes";
 
 import { asyncErrorHandler } from "../utils/errorUtils/asyncErrorHandler.js";
 import { CustomError } from "../utils/errorUtils/customError.js";
 
-import { createNoteSchema } from "../validators/notes/notes.schema.js";
+import { createNoteSchema } from "../validators/notes/note.schema.js";
 import { mongooseIdSchema } from "../validators/mongooseId.schema.js";
 
-export function notesController(notesService: NotesServicesTypes) {
+export function noteController(noteService: NoteServicesTypes) {
     const router = Router();
 
     router.get(
         "/",
         asyncErrorHandler(async (req: Request, res: Response) => {
-            const notes = await notesService.getAll();
+            const notes = await noteService.getAll();
             res.status(200).json(notes);
         })
     );
@@ -28,7 +28,7 @@ export function notesController(notesService: NotesServicesTypes) {
                 throw new CustomError(resultData.error.issues[0].message, 400);
             }
 
-            const note = await notesService.create(resultData.data);
+            const note = await noteService.create(resultData.data);
             res.status(201).json(note);
         })
     );
@@ -37,8 +37,6 @@ export function notesController(notesService: NotesServicesTypes) {
         "/:noteId",
         asyncErrorHandler(async (req, res) => {
             const resultId = mongooseIdSchema.safeParse(req.params.noteId);
-            console.log(resultId.data);
-
             if (!resultId.success) {
                 throw new CustomError(resultId.error.issues[0].message, 400);
             }
@@ -48,10 +46,7 @@ export function notesController(notesService: NotesServicesTypes) {
                 throw new CustomError(resultData.error.issues[0].message, 400);
             }
 
-            const note = await notesService.edit(
-                resultId.data,
-                resultData.data
-            );
+            const note = await noteService.edit(resultId.data, resultData.data);
 
             res.status(200).json(note);
         })
@@ -65,7 +60,7 @@ export function notesController(notesService: NotesServicesTypes) {
                 throw new CustomError(resultId.error.issues[0].message, 400);
             }
 
-            await notesService.remove(resultId.data);
+            await noteService.remove(resultId.data);
 
             res.status(204).end();
         })
@@ -79,7 +74,7 @@ export function notesController(notesService: NotesServicesTypes) {
                 throw new CustomError(resultId.error.issues[0].message, 400);
             }
 
-            const note = await notesService.getById(resultId.data);
+            const note = await noteService.getById(resultId.data);
 
             res.status(200).send(note);
         })
