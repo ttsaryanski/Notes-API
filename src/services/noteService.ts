@@ -1,8 +1,8 @@
 import { Note } from "../models/Note.js";
 
-import { NoteResponseType } from "../types/NoteTypes";
-import { NoteServicesTypes } from "../types/ServicesTypes";
-import { CreateNoteDataType } from "../validators/notes/note.schema";
+import { NoteResponseType } from "../types/NoteTypes.js";
+import { NoteServicesTypes } from "../types/ServicesTypes.js";
+import { CreateNoteDataType } from "../validators/notes/note.schema.js";
 
 import { CustomError } from "../utils/errorUtils/customError.js";
 
