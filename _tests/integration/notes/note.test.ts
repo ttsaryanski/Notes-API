@@ -1,7 +1,8 @@
+import { describe, it, beforeEach, expect } from "@jest/globals";
 import request from "supertest";
 import mongoose from "mongoose";
 
-import app from "../../../src/app";
+import app from "../../../src/app.js";
 import { Note, INote } from "../../../src/models/Note.js";
 
 import { CreateNoteDataType } from "../../../src/validators/notes/note.schema.js";

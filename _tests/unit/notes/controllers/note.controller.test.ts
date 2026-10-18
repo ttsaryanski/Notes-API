@@ -1,7 +1,8 @@
 import express from "express";
 import request from "supertest";
+import { beforeEach, describe, expect, jest, test } from "@jest/globals";
 
-import { noteController } from "../../../../src/controllers/noteControllers.js";
+import { noteControllers } from "../../../../src/controllers/noteControllers.js";
 
 import errorHandler from "../../../../src/middlewares/errorHandler.js";
 
@@ -21,7 +22,7 @@ const mockNotesService: jest.Mocked<NoteServicesTypes> = {
 
 const app = express();
 app.use(express.json());
-app.use("/notes", noteController(mockNotesService));
+app.use("/notes", noteControllers(mockNotesService));
 app.use(errorHandler);
 
 describe("Notes Controller", () => {

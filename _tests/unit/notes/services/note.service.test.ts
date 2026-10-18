@@ -1,4 +1,13 @@
-import { noteService } from "../../../../src/services/noteServices.js";
+import {
+    describe,
+    it,
+    expect,
+    jest,
+    beforeEach,
+    afterEach,
+} from "@jest/globals";
+
+import { noteServices } from "../../../../src/services/noteServices.js";
 
 import { Note } from "../../../../src/models/Note.js";
 
@@ -27,7 +36,7 @@ jest.mock("../../../../src/models/Note.js", () => ({
     },
 }));
 
-describe("notesService/getAll()", () => {
+describe("notesServices/getAll()", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
@@ -47,11 +56,13 @@ describe("notesService/getAll()", () => {
                 createdAt: new Date("2024-01-02"),
             },
         ];
-        const leanMock = jest.fn().mockResolvedValue(mockData);
+        const leanMock = jest
+            .fn<() => Promise<Partial<MockNoteInterface>[]>>()
+            .mockResolvedValue(mockData);
         const selectMock = jest.fn().mockReturnValue({ lean: leanMock });
         (mockedNote.find as jest.Mock).mockReturnValue({ select: selectMock });
 
-        const result = await noteService.getAll();
+        const result = await noteServices.getAll();
 
         const expected: NoteResponseType[] = [
             {
@@ -75,7 +86,7 @@ describe("notesService/getAll()", () => {
     });
 });
 
-describe("notesService/create", () => {
+describe("notesServices/create", () => {
     afterEach(() => {
         jest.clearAllMocks();
     });
@@ -86,16 +97,19 @@ describe("notesService/create", () => {
             content: "Test content",
         };
 
-        const mockNote: Partial<MockNoteInterface> = {
+        const mockNote: MockNoteInterface = {
             _id: "id1",
             title: "Test title",
             content: "Test content",
             createdAt: new Date("2024-01-01"),
         };
 
-        (mockedNote.create as jest.Mock).mockResolvedValue(mockNote);
+        const createMock = mockedNote.create as unknown as jest.MockedFunction<
+            (data: CreateNoteDataType) => Promise<MockNoteInterface>
+        >;
+        createMock.mockResolvedValue(mockNote);
 
-        const result = await noteService.create(createData);
+        const result = await noteServices.create(createData);
 
         const expected: NoteResponseType = {
             _id: "id1",
@@ -109,7 +123,7 @@ describe("notesService/create", () => {
     });
 });
 
-describe("notesService/edit", () => {
+describe("notesServices/edit", () => {
     it("should update and return the updated note", async () => {
         const noteId = "id1";
         const updateData: CreateNoteDataType = {
@@ -126,7 +140,7 @@ describe("notesService/edit", () => {
             mockUpdate as MockNoteInterface
         );
 
-        const result = await noteService.edit(noteId, updateData);
+        const result = await noteServices.edit(noteId, updateData);
 
         const expected: NoteResponseType = {
             _id: noteId,
@@ -150,12 +164,12 @@ describe("notesService/edit", () => {
         mockedNote.findByIdAndUpdate.mockResolvedValue(null);
 
         await expect(
-            noteService.edit("id1", { title: "x", content: "y" })
+            noteServices.edit("id1", { title: "x", content: "y" })
         ).rejects.toThrow(CustomError);
     });
 });
 
-describe("notesService/remove", () => {
+describe("notesServices/remove", () => {
     afterEach(() => {
         jest.clearAllMocks();
     });
@@ -171,7 +185,7 @@ describe("notesService/remove", () => {
             mockDelete as MockNoteInterface
         );
 
-        await noteService.remove("id1");
+        await noteServices.remove("id1");
 
         expect(mockedNote.findByIdAndDelete).toHaveBeenCalledWith("id1");
     });
@@ -179,11 +193,11 @@ describe("notesService/remove", () => {
     it("should throw CustomError when note not found!", async () => {
         mockedNote.findByIdAndDelete.mockResolvedValue(null);
 
-        await expect(noteService.remove("id1")).rejects.toThrow(CustomError);
+        await expect(noteServices.remove("id1")).rejects.toThrow(CustomError);
     });
 });
 
-describe("notesService/getById", () => {
+describe("notesServices/getById", () => {
     afterEach(() => {
         jest.clearAllMocks();
     });
@@ -198,7 +212,7 @@ describe("notesService/getById", () => {
 
         mockedNote.findById.mockResolvedValue(mockNote as MockNoteInterface);
 
-        const result = await noteService.getById("id1");
+        const result = await noteServices.getById("id1");
 
         const expected: NoteResponseType = {
             _id: "id1",
@@ -214,6 +228,6 @@ describe("notesService/getById", () => {
     it("should throw CustomError when note is not found", async () => {
         mockedNote.findById.mockResolvedValue(null);
 
-        await expect(noteService.getById("id1")).rejects.toThrow(CustomError);
+        await expect(noteServices.getById("id1")).rejects.toThrow(CustomError);
     });
 });
