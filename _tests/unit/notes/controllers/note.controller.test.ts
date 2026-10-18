@@ -1,7 +1,7 @@
 import express from "express";
 import request from "supertest";
 
-import { noteController } from "../../../../src/controllers/noteController.js";
+import { noteController } from "../../../../src/controllers/noteControllers.js";
 
 import errorHandler from "../../../../src/middlewares/errorHandler.js";
 

@@ -1,8 +1,8 @@
 import { NoteResponseType } from "./NoteTypes.js";
 import { CreateNoteDataType } from "../validators/notes/note.schema.js";
 
-import { UserResponseType } from "./UserTypes.js";
-import { CreateUserDataType } from "../validators/notes/user.schema.js";
+import { MealResponseType } from "./MealTypes.js";
+import { CreateMealDataType } from "../validators/meals/meal.schema.js";
 
 export interface NoteServicesTypes {
     getAll(): Promise<NoteResponseType[]>;
@@ -12,9 +12,7 @@ export interface NoteServicesTypes {
     getById(noteId: string): Promise<NoteResponseType>;
 }
 
-export interface AuthServicesTypes {
-    register(data: CreateUserDataType): Promise<string>;
-    login(data: CreateUserDataType): Promise<string>;
-    logout(): Promise<void>;
-    getUserById(): Promise<UserResponseType>;
+export interface MealServicesTypes {
+    getTop(): Promise<MealResponseType[]>;
+    incrementCount(data: CreateMealDataType): Promise<void>;
 }

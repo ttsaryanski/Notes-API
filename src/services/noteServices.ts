@@ -1,12 +1,12 @@
 import { Note } from "../models/Note.js";
 
-import { NoteResponseType } from "../types/NoteTypes.js";
 import { NoteServicesTypes } from "../types/ServicesTypes.js";
+import { NoteResponseType } from "../types/NoteTypes.js";
 import { CreateNoteDataType } from "../validators/notes/note.schema.js";
 
 import { CustomError } from "../utils/errorUtils/customError.js";
 
-export const noteService: NoteServicesTypes = {
+export const noteServices: NoteServicesTypes = {
     async getAll(): Promise<NoteResponseType[]> {
         const notes = await Note.find().select("-__v").lean();
 

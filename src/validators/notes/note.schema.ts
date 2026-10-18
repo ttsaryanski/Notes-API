@@ -9,5 +9,4 @@ export const createNoteSchema = z.object({
         .string()
         .min(3, "Note content should be at least 3 characters long!"),
 });
-
 export type CreateNoteDataType = z.infer<typeof createNoteSchema>;
